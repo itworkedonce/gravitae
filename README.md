@@ -38,12 +38,14 @@ Gravitae is an open-source tool designed to bring straightforward physics simula
 
 ### Logger
 * 📜 **Log Panel:** Toggle this to show or hide the console. Bugs are expected—check here if things get weird.
+
 ---
 
 ## Built With
 
 * **[Bolt CEP](https://github.com/hyperbrew/bolt-cep):** The foundation for this React-based extension.
 * **[Matter.js](https://brm.io/matter-js/):** The engine handling all the 2D rigid body dynamics.
+
 ---
 
 ## Installation
@@ -55,9 +57,16 @@ Gravitae is an open-source tool designed to bring straightforward physics simula
    * **Mac:** `/Library/Application Support/Adobe/CEP/extensions/`
 
 ### 2. Install the Physics Presets (Required)
-For the plugin to create the control sliders on your layers, you **must** copy the following files to your **After Effects User Presets folder**:
-* `gravitaeBody.ffx` (Adds sliders for Density, Friction, Air Friction, and Restitution)
-* `gravitaeWorld.ffx` (Adds sliders for Gravity Angle, Scale, and Drag)
+For the plugin to create control sliders, you must copy `gravitaeBody.ffx` [cite: 1] [cite_start]and `gravitaeWorld.ffx` [cite: 3] to your **User Presets** folder:
+
+**Windows:**
+`Documents\Adobe\After Effects [Version]\User Presets`
+
+**macOS:**
+`Documents/Adobe/After Effects [Version]/User Presets`
+
+**Important:** If these files are missing, the plugin will use default values and you won't be able to animate or customize the physical properties of your objects.
+
 ---
 
 > **Note:** This is an Alpha release. I’m aware of some bugs (like switching from Static to Dynamic). If you want to help or just tinker with the code to make it better, feel free!
