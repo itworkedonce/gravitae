@@ -44,19 +44,20 @@ Gravitae is an open-source tool designed to bring straightforward physics simula
 
 * **[Bolt CEP](https://github.com/hyperbrew/bolt-cep):** The foundation for this React-based extension.
 * **[Matter.js](https://brm.io/matter-js/):** The engine handling all the 2D rigid body dynamics.
-
 ---
 
 ## Installation
 
-### 1. Automatic (Recommended)
-Use a ZXP installer (like aescripts) and drag the `gravitae.zxp` file.
+### 1. Install the Extension
+* **Automatic:** Use a ZXP installer (like aescripts) and drag the `gravitae.zxp` file.
+* **Manual:** Unzip the ZXP and paste the folder here:
+   * **Win:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\`
+   * **Mac:** `/Library/Application Support/Adobe/CEP/extensions/`
 
-### 2. Manual
-Unzip the ZXP and paste the folder here:
-* **Windows:** `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\`
-* **macOS:** `/Library/Application Support/Adobe/CEP/extensions/`
-
+### 2. Install the Physics Presets (Required)
+For the plugin to create the control sliders on your layers, you **must** copy the following files to your **After Effects User Presets folder**:
+* `gravitaeBody.ffx` (Adds sliders for Density, Friction, Air Friction, and Restitution)
+* `gravitaeWorld.ffx` (Adds sliders for Gravity Angle, Scale, and Drag)
 ---
 
 > **Note:** This is an Alpha release. I’m aware of some bugs (like switching from Static to Dynamic). If you want to help or just tinker with the code to make it better, feel free!
