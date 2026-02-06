@@ -45,6 +45,7 @@ Gravitae is an open-source tool designed to bring straightforward physics simula
 
 * **[Bolt CEP](https://github.com/hyperbrew/bolt-cep):** The foundation for this React-based extension.
 * **[Matter.js](https://brm.io/matter-js/):** The engine handling all the 2D rigid body dynamics.
+* **[Space Grotesk](https://floriankarsten.github.io/space-grotesk/):** Includes Space Grotesk by Florian Karsten
 
 ---
 
