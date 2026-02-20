@@ -1079,7 +1079,7 @@ export const createMatterBody = (
 export const filterMatterBodies = (
   matterBodies: Record<number, any>,
   compData: ProjectCompositions,
-  currentCompId: string | null
+  currentCompId: number | null
 ): Record<number, any> => {
   // Return all bodies when no specific composition is active
   if (currentCompId === null) {
@@ -1089,9 +1089,8 @@ export const filterMatterBodies = (
   // Only keep bodies whose layers exist in the current composition
   return Object.fromEntries(
     Object.entries(matterBodies).filter(([layerId]) => {
-      const compId = Number(currentCompId);
       return (
-        compData[compId] && compData[compId].layers[Number(layerId)] !== undefined
+        compData[currentCompId!] && compData[currentCompId!].layers[Number(layerId)] !== undefined
       );
     })
   );

@@ -11,7 +11,7 @@ import { FrameData, ProjectCompositions } from "../types/types";
 interface ApplyButtonProps {
     frameData: FrameData[];
     compData: ProjectCompositions;
-    currentCompId: string | number | null;
+    currentCompId: number | null;
 }
 
 // -----------------------------
@@ -34,9 +34,8 @@ export const handleApplyButtonClick = async ({
         return;
     }
 
-    const compIdNum = Number(currentCompId);
-    const compIdStr = currentCompId.toString();
-    const currentComp = compData[compIdStr];
+    const compIdNum = currentCompId!;
+    const currentComp = compData[compIdNum];
 
     if (!currentComp || !currentComp.layers) {
         log.warn("No layer data found for current composition.");

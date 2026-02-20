@@ -6,5 +6,4 @@ export * from "./simulationService";
 export * from "./buttonHandlerService";
 export * from "./notifyService";
 export * from "./centroidService";
-export * from "./applyKeyframes";
 export * from "./resetService";

@@ -1,12 +1,13 @@
 import { createContext, useContext } from 'react';
-import type { FrameData } from '../types/types';
+import type { FrameData, ProjectCompositions } from '../types/types';
+import type { Body } from 'matter-js';
 
 export type AppState = {
-  compData: any;
-  setCompData: (data: any) => void;
+  compData: ProjectCompositions;
+  setCompData: (data: ProjectCompositions | ((prev: ProjectCompositions) => ProjectCompositions)) => void;
 
   composition: {
-    currentCompId: string | null;
+    currentCompId: number | null;
     isCompSwitching: boolean;
     compSize: [number, number];
   };
@@ -23,11 +24,12 @@ export type AppState = {
     setFrameData: (data: FrameData[]) => void;
   };
   physics: {
-    matterBodies: any;
-    setMatterBodies: (bodies: any) => void;
+    matterBodies: Record<number, Body>;
+    setMatterBodies: (bodies: Record<number, Body>) => void;
     simulationStatus: 'idle' | 'preparing' | 'running' | 'completed';
     setSimulationStatus: (status: 'idle' | 'preparing' | 'running' | 'completed') => void;
     bodiesReady: boolean;
+    setBodiesReady: (ready: boolean) => void;
   };
   buttons: {
     isProcessing: boolean;

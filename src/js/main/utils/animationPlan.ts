@@ -18,7 +18,7 @@ import type {
 // and aggregates per-layer series (rotation, scale, anchor, density,
 // friction, frictionAir, restitution, bodyType) for the simulation runner.
 export const buildAnimationPlan = (
-    currentCompId: string | number | null,
+    currentCompId: number | null,
     compData: ProjectCompositions | null
 ): AnimationPlan => {
     const compId = currentCompId;

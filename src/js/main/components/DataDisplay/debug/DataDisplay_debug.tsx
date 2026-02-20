@@ -123,8 +123,8 @@ const DataDisplayDebug: React.FC = () => {
   if (currentCompId === null) return null;
 
   // Convert string ID to number for accessing compData
-  const compIdNum = parseInt(currentCompId, 10);
-  if (isNaN(compIdNum) || !compData[compIdNum]) return null;
+  const compIdNum = currentCompId;
+  if (compIdNum === null || !compData[compIdNum]) return null;
 
   // Extract gravity angle, scale, and drag from compData[compIdNum]
   const currentComp = compData[compIdNum];

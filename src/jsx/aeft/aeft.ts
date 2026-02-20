@@ -404,30 +404,7 @@ export const fetchLayerData = (
       return { frame, isHold };
     };
 
-    // Step delta helpers
-    const computeDeltasNumber = (vals: number[], pre: number): number[] => {
-      const out: number[] = [];
-      let prev = pre;
-      for (let i = 0; i < vals.length; i++) {
-        const curr = vals[i];
-        out.push(curr - prev);
-        prev = curr;
-      }
-      return out;
-    };
-    const computeDeltasPair = (
-      vals: [number, number][],
-      pre: [number, number]
-    ): [number, number][] => {
-      const out: [number, number][] = [];
-      let prev = pre;
-      for (let i = 0; i < vals.length; i++) {
-        const curr = vals[i];
-        out.push([curr[0] - prev[0], curr[1] - prev[1]]);
-        prev = curr;
-      }
-      return out;
-    };
+
 
     // Build animatedProperties only for keys that were actually sampled (i.e., have keyframes)
     const animatedProps: any = {};
@@ -435,7 +412,6 @@ export const fetchLayerData = (
     if (sampled.position && sampled.position.length) {
       const positionPre = sampled.position[0] as [number, number];
       const positionVals = sampled.position.slice(1) as [number, number][];
-      const positionDelta = computeDeltasPair(positionVals, positionPre);
       animatedProps.position = {
         preValue: positionPre,
         values: positionVals,
@@ -446,7 +422,6 @@ export const fetchLayerData = (
     if (sampled.rotation && sampled.rotation.length) {
       const rotationPre = sampled.rotation[0] as number;
       const rotationVals = sampled.rotation.slice(1) as number[];
-      const rotationDelta = computeDeltasNumber(rotationVals, rotationPre);
       animatedProps.rotation = {
         preValue: rotationPre,
         values: rotationVals,
@@ -457,7 +432,6 @@ export const fetchLayerData = (
     if (sampled.scale && sampled.scale.length) {
       const scalePre = sampled.scale[0] as [number, number];
       const scaleVals = sampled.scale.slice(1) as [number, number][];
-      const scaleDelta = computeDeltasPair(scaleVals, scalePre);
       animatedProps.scale = {
         preValue: scalePre,
         values: scaleVals,
@@ -468,7 +442,6 @@ export const fetchLayerData = (
     if (sampled.anchorPoint && sampled.anchorPoint.length) {
       const anchorPre = sampled.anchorPoint[0] as [number, number];
       const anchorVals = sampled.anchorPoint.slice(1) as [number, number][];
-      const anchorDelta = computeDeltasPair(anchorVals, anchorPre);
       animatedProps.anchorPoint = {
         preValue: anchorPre,
         values: anchorVals,
@@ -479,7 +452,6 @@ export const fetchLayerData = (
     if (sampled.bodyType && sampled.bodyType.length) {
       const bodyTypePre = sampled.bodyType[0] as number;
       const bodyTypeVals = sampled.bodyType.slice(1) as number[];
-      const bodyTypeDelta = computeDeltasNumber(bodyTypeVals, bodyTypePre);
       animatedProps.bodyType = {
         preValue: bodyTypePre,
         values: bodyTypeVals,
@@ -490,7 +462,6 @@ export const fetchLayerData = (
     if (sampled.density && sampled.density.length) {
       const densityPre = sampled.density[0] as number;
       const densityVals = sampled.density.slice(1) as number[];
-      const densityDelta = computeDeltasNumber(densityVals, densityPre);
       animatedProps.density = {
         preValue: densityPre,
         values: densityVals,
@@ -501,7 +472,6 @@ export const fetchLayerData = (
     if (sampled.friction && sampled.friction.length) {
       const frictionPre = sampled.friction[0] as number;
       const frictionVals = sampled.friction.slice(1) as number[];
-      const frictionDelta = computeDeltasNumber(frictionVals, frictionPre);
       animatedProps.friction = {
         preValue: frictionPre,
         values: frictionVals,
@@ -512,7 +482,6 @@ export const fetchLayerData = (
     if (sampled.airFriction && sampled.airFriction.length) {
       const airFrictionPre = sampled.airFriction[0] as number;
       const airFrictionVals = sampled.airFriction.slice(1) as number[];
-      const airFrictionDelta = computeDeltasNumber(airFrictionVals, airFrictionPre);
       animatedProps.frictionAir = {
         preValue: airFrictionPre,
         values: airFrictionVals,
@@ -523,7 +492,6 @@ export const fetchLayerData = (
     if (sampled.restitution && sampled.restitution.length) {
       const restitutionPre = sampled.restitution[0] as number;
       const restitutionVals = sampled.restitution.slice(1) as number[];
-      const restitutionDelta = computeDeltasNumber(restitutionVals, restitutionPre);
       animatedProps.restitution = {
         preValue: restitutionPre,
         values: restitutionVals,
@@ -738,73 +706,7 @@ export const createWorldController = (
   app.endUndoGroup();
 };
 
-export const applyCalculatedPosition = (
-  layerId: number,
-  compId: number,
-  value: [number, number][]
-) => {
-  app.beginUndoGroup("Set Calculated Position");
-  try {
 
-    const activeComp = app.project.activeItem;
-    if (!(activeComp instanceof CompItem)) {
-      app.endUndoGroup();
-      return false;
-    }
-    const index = getLayerById(layerId, compId);
-    const layer = index != null ? activeComp.layer(index) : null;
-    if (!layer) {
-      app.endUndoGroup();
-      return false;
-    }
-    const transform = layer.property("ADBE Transform Group") as PropertyGroup;
-    const layerPosition = transform.property("ADBE Position") as Property;
-
-    layerPosition.expression = `posVal=${JSON.stringify(value)};
-idx = Math.floor(timeToFrames(time)) % posVal.length;
-posVal[idx]+value - posVal[0]`;
-
-
-    app.endUndoGroup();
-    return;
-  } catch (error) {
-    app.endUndoGroup();
-    return;
-  }
-};
-
-export const applyCalculateRotation = (
-  layerId: number,
-  compId: number,
-  value: number[]
-) => {
-  app.beginUndoGroup("Set Calculated Rotation");
-  try {
-    const activeComp = app.project.activeItem;
-    if (!(activeComp instanceof CompItem)) {
-      app.endUndoGroup();
-      return false;
-    }
-    const index = getLayerById(layerId, compId);
-    const layer = index != null ? activeComp.layer(index) : null;
-    if (!layer) {
-      app.endUndoGroup();
-      return false;
-    }
-    const transform = layer.property("ADBE Transform Group") as PropertyGroup;
-    const layerPosition = transform.property("ADBE Rotate Z") as Property;
-
-    layerPosition.expression = `rotVal=${JSON.stringify(value)};
-idx = Math.floor(timeToFrames(time)) % rotVal.length;
-radiansToDegrees(rotVal[idx])`;
-
-    app.endUndoGroup();
-    return;
-  } catch (error) {
-    app.endUndoGroup();
-    return;
-  }
-};
 
 export const applySimulationToLayers = (
   compId: number,
@@ -906,7 +808,11 @@ export const resetSimulationOnLayers = (
           "ADBE Transform Group"
         ) as PropertyGroup;
 
-
+        // Clear Position expression
+        // const layerPosition = transform.property("ADBE Position") as Property;
+        // if (layerPosition && layerPosition.expression) {
+        //   layerPosition.expression = "";
+        // }
 
         // Clear Rotation expression
         const layerRotation = transform.property("ADBE Rotate Z") as Property;

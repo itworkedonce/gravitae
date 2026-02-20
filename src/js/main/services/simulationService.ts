@@ -16,7 +16,7 @@ export const getCompTimingInfo = async (): Promise<{
   framerate: number;
   duration: number;
   workarea: [number, number];
-  compId?: string | null;
+  compId?: number | null;
 }> => {
   // Skip if not in CEP environment
   if (!window.cep) {
@@ -28,7 +28,7 @@ export const getCompTimingInfo = async (): Promise<{
     const timingInfo = await evalTS("getTimingInfo");
     rawCompId = timingInfo.compId;
     const compId =
-      rawCompId !== null && rawCompId !== undefined ? String(rawCompId) : null;
+      rawCompId !== null && rawCompId !== undefined ? Number(rawCompId) : null;
     if (!compId) {
       // No active composition: do not log error
       return { framerate: 30, duration: 10, workarea: [0, 10], compId: null };
@@ -64,8 +64,8 @@ export const fetchCompSize = async ({
 }: {
   setCompSize: (size: [number, number]) => void;
   prevSize: { current: [number, number] };
-  prevCompId: { current: string | null | undefined };
-  currentCompId: string | null | undefined;
+  prevCompId: { current: number | null | undefined };
+  currentCompId: number | null | undefined;
 }) => {
   try {
     // Skip composition size fetching if not running in CEP environment (browser preview)

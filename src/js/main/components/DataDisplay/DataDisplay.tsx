@@ -30,11 +30,6 @@ const clearSingleLayerService = async (
   targetLayerId: number,
   compData: ProjectCompositions,
   setCompData: (data: ProjectCompositions) => void,
-  setMatterBodies: (
-    bodies:
-      | Record<number, Body | null>
-      | ((prev: Record<number, Body | null>) => Record<number, Body | null>)
-  ) => void,
   notify?: {
     info: (msg: string) => void;
     warn: (msg: string) => void;
@@ -98,22 +93,7 @@ const clearSingleLayerService = async (
       updatedData[currentCompId] = newCurrentCompData;
     }
 
-    // Update matterBodies state by setting removed bodies to null first (for garbage collection)
-    setMatterBodies((prevBodies: Record<number, Body | null>) => {
-      const updatedBodies: Record<number, Body | null> = { ...prevBodies };
-
-      // Set bodies to null first for garbage collection
-      Object.keys(bodiesToRemove).forEach((bodyId) => {
-        updatedBodies[Number(bodyId)] = null;
-      });
-
-      // Then delete the entries
-      Object.keys(bodiesToRemove).forEach((bodyId) => {
-        delete updatedBodies[Number(bodyId)];
-      });
-
-      return updatedBodies;
-    });
+    // Matter bodies will be reconstructed by useLayerPhysics based on updated compData
 
     // Filter out any deleted layers and update state
     const finalData = await filterDeletedLayers(updatedData);
@@ -181,16 +161,14 @@ const DataDisplay: React.FC = () => {
     compData,
     setCompData,
     composition: { currentCompId },
-    physics: { setMatterBodies },
   } = useAppState();
 
   const notify = useNotifyService();
 
   if (currentCompId === null) return null;
 
-  // Convert string ID to number for accessing compData
-  const compIdNum = parseInt(currentCompId, 10);
-  if (isNaN(compIdNum) || !compData[compIdNum]) return null;
+  const compIdNum = currentCompId;
+  if (compIdNum === null || !compData[compIdNum]) return null;
 
   const currentCompLayers = compData[compIdNum].layers;
   const layerEntries = Object.entries(currentCompLayers) as LayerEntry[];
@@ -203,7 +181,6 @@ const DataDisplay: React.FC = () => {
         parseInt(layerId, 10),
         compData,
         setCompData,
-        setMatterBodies,
         notify
       );
     } catch (error) {

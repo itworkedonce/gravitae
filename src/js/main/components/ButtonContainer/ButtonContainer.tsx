@@ -36,7 +36,7 @@ const ButtonContainer = () => {
             key={`left-${index}`}
             label={button.label}
             onClick={button.onClick}
-            disabled={button.disabled}
+            disabled={!!button.disabled}
             icon={button.icon}
           />
         ))}
@@ -47,7 +47,7 @@ const ButtonContainer = () => {
             key={`right-${index}`}
             label={button.label}
             onClick={button.onClick}
-            disabled={button.disabled}
+            disabled={!!button.disabled}
             icon={button.icon}
           />
         ))}

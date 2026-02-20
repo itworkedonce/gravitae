@@ -29,8 +29,8 @@ export const useCompSwitching = (
   ) => void,
   updateTimingInfo?: () => Promise<void> // Add timing update function
 ) => {
-  const [currentCompId, setCurrentCompId] = useState<string | null>(null);
-  const lastProcessedCompId = useRef<string | null>(null);
+  const [currentCompId, setCurrentCompId] = useState<number | null>(null);
+  const lastProcessedCompId = useRef<number | null>(null);
 
   // -----------------------------
   // Composition Data Management
@@ -51,14 +51,14 @@ export const useCompSwitching = (
           );
 
           // Remove empty compositions from state to prevent memory leaks
-          const currentCompId_num = Number(currentCompId);
-          if (compData && compData[currentCompId_num]) {
+          const currentCompId_num = currentCompId;
+          if (currentCompId_num !== null && compData && compData[currentCompId_num]) {
             const layerCount = Object.keys(compData[currentCompId_num].layers).length;
 
             if (layerCount === 0) {
               setCompData((prevData) => {
                 const newData = { ...prevData };
-                delete newData[currentCompId_num];
+                delete newData[currentCompId_num!];
                 log.info(`Cleared empty composition ${currentCompId}`);
                 return newData;
               });
@@ -119,7 +119,7 @@ export const useCompSwitching = (
     updateCompData();
   }, [currentCompId, setSimulationStatus]);
   const [isCompSwitching, setIsCompSwitching] = useState(false);
-  const lastCompIdRef = useRef<string | null>(null);
+  const lastCompIdRef = useRef<number | null>(null);
   const retryCountRef = useRef(0);
   const maxRetries = 5;
   const retryDelay = 500; // 500ms between retries
@@ -136,24 +136,21 @@ export const useCompSwitching = (
 
         const compId = await evalTS("getCompId");
 
-        // Convert compId to string if not null
-        const stringCompId = compId !== null ? String(compId) : null;
-
         // If composition ID changed, update state immediately
-        if (compId !== null && stringCompId !== lastCompIdRef.current) {
+        if (compId !== null && compId !== lastCompIdRef.current) {
           setIsCompSwitching(true);
 
           // Update the reference and state
-          lastCompIdRef.current = stringCompId;
-          setCurrentCompId(stringCompId);
+          lastCompIdRef.current = compId;
+          setCurrentCompId(compId);
 
           // Reset retry count on successful update
           retryCountRef.current = 0;
 
           // Dynamic delay based on existing bodies in the composition
           const existingBodies =
-            compData && stringCompId && compData[stringCompId]
-              ? Object.keys(compData[stringCompId].layers).length
+            compData && compId && compData[compId]
+              ? Object.keys(compData[compId].layers).length
               : 0;
           const baseDelay = 200; // Base switching delay
           const perBodyDelay = 5; // Additional delay per existing body

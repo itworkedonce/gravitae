@@ -49,25 +49,19 @@ export const fetchLayerDataService = async (
         })
       );
 
-      // Get current composition ID to check if it should be cleared when empty
-      const checkCurrentComp = async () => {
-        try {
-          const currentCompId = await evalTS("getCompId");
-          if (currentCompId && prevCompData[currentCompId]?.layers) {
-
-            // If current comp exists in old data but not in new data, it means it's empty
-            if (!newData[currentCompId].layers) {
-              delete updatedData[currentCompId];
-              log.info(`Cleared empty composition ${currentCompId}`);
-            }
-          }
-        } catch (error) {
-          log.error("Error checking current composition:", error);
+      // Check previous compositions: if they existed before but have no layers
+      // in the new data, clear them (synchronous — no async inside setState)
+      Object.keys(prevCompData).forEach((prevCompId) => {
+        const prevCompIdNum = Number(prevCompId);
+        if (
+          prevCompData[prevCompIdNum]?.layers &&
+          newData[prevCompIdNum] &&
+          (!newData[prevCompIdNum].layers || Object.keys(newData[prevCompIdNum].layers).length === 0)
+        ) {
+          delete updatedData[prevCompIdNum];
+          log.info(`Cleared empty composition ${prevCompId}`);
         }
-      };
-
-      // Check current composition for emptiness
-      checkCurrentComp();
+      });
 
       // For each composition in the new data
       Object.keys(newData).forEach((compId) => {

@@ -312,7 +312,7 @@ export const useButtonHandlers = () => {
 
   const handleSettingsButton = async () => {
     if (currentCompId) {
-      await handleSettingsButtonClick(Number(currentCompId));
+      await handleSettingsButtonClick(currentCompId);
     }
   };
   // -----------------------------

@@ -21,7 +21,7 @@ export const useLayerPhysics = ({
   setBodiesReady,
   compData,
 }: {
-  currentCompId?: string | null;
+  currentCompId?: number | null;
   simulationStatus: string;
   bodiesReady: boolean;
   setBodiesReady: (ready: boolean) => void;
@@ -116,7 +116,7 @@ export const useLayerPhysics = ({
       // Normalize currentCompId to a number to match compData keys
       const compIdNum =
         currentCompId !== null && currentCompId !== undefined
-          ? Number(currentCompId)
+          ? currentCompId
           : NaN;
 
       const currentCompLayers =

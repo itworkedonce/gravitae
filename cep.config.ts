@@ -4,7 +4,7 @@ import { version } from "./package.json";
 const config: CEP_Config = {
   version,
   id: "com.gravitae.cep", 
-  displayName: "Gravitae", 
+  displayName: "Gravitae Alpha 2", 
   symlink: "local",
   port: 3000,
   servePort: 5000,
@@ -28,7 +28,7 @@ const config: CEP_Config = {
     {
       mainPath: "./main/index.html",
       name: "main",
-      panelDisplayName: "Gravitae", 
+      panelDisplayName: "Gravitae Alpha 2", 
       autoVisible: true,
       width: 600,
       height: 650,
