@@ -1,0 +1,32 @@
+.timerContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 8px;
+  padding: 2px;
+}
+
+.timer {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  color: var(--app--text);
+  background-color: var(--app--bg);
+  display: flex;
+  align-items: center;
+}
+
+.timebar {
+  width: 100%;
+  height: 8px;
+  margin: auto 0;
+
+  
+  &::-webkit-meter-bar {
+    background: var(--app--deep);
+    border: none;
+  }
+
+    &::-webkit-meter-optimum-value {
+    background: var(--app--highlight);
+  }
+}

@@ -1,0 +1,150 @@
+/* Remove SCSS import */
+/* @use '../../variables.scss' as vars; */
+
+.app-data {
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  gap: 10px;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.data-title {
+  font-size: 11px;
+  text-wrap: wrap;
+  font-weight: bold;
+}
+
+.data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 100%;
+  text-wrap: wrap;
+}
+
+.layer-data-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: var(--border-radius);
+}
+
+.layer-data {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  font-size: xx-small;
+  padding: 10px;
+  padding-left: 11px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  background-color: var(--app--deep);
+  border: 1px solid var(--app--deep__border);
+  transition: all 0.2s ease;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  border-left: none;
+  color: var(--app--color);
+}
+
+.layer-properties {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+
+}
+
+.property-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background-color: red;
+}
+
+.data-key {
+  font-weight: bold;
+  color: var(--fontColor);
+}
+
+.data-toggle-button {
+  cursor: pointer;
+  font-size: xx-small;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  background-color: var(--app--highlight);
+  transition: all 0.2s ease;
+  border: 1px solid var(--app--deep__border);
+  border-right: none;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+
+  &:hover {
+    border: 1px solid var(--color_3);
+    border-right: none;
+    color: var(--app--bg);
+    background-color: var(--color_3);
+  }
+
+  &:hover+.layer-data {
+    border: 1px solid var(--color_3);
+    border-left: none;
+  }
+}
+
+.data-display {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 4px;
+  padding-left: 18px;
+  padding-right: 18px;
+  color: var(--app--color);
+}
+
+.global-properties {
+  font-size: xx-small;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 30px;
+  gap: 25px;
+  margin-left: 18px;
+  margin-right: 20px;
+  margin-bottom: 6px;
+}
+
+.global-properties>div {
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.global-properties>div>span {
+  font-weight: 800;
+  padding-right: 2px;
+}
+
+.property-item {
+  margin: 4px 0;
+}
+
+.data-value {
+  color: var(--app--color);
+  word-break: break-all;
+}
+
+.simulation-status {
+  font-size: 10px;
+  color: var(--fontColor);
+  text-transform: uppercase;
+
+}
+
+.simulation-status-key {
+  color: var(--font-light);
+}

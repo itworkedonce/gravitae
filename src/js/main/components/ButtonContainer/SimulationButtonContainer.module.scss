@@ -1,0 +1,29 @@
+
+.simulation-button-container {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  padding-left: 18px;
+  padding-right: 18px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.simulation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Icon buttons (Settings) maintain fixed square dimensions */
+.icon-button {
+  flex: 0 0 auto; /* Don't grow or shrink */
+}
+
+/* Text buttons (Play, Apply) fill available space equally */
+.text-button {
+  flex: 1; /* Grow to fill available space */
+  min-width: 80px; /* Minimum readable width */}

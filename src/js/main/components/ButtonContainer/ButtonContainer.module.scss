@@ -1,0 +1,27 @@
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%; /* Makes the container take full width */
+  padding-left: 18px;
+  padding-right: 18px;
+  margin-left: auto; /* These two margin properties center the container */
+  margin-right: auto;
+  gap: 8px;
+}
+
+.left-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+  width: fit-content;
+}
+
+.right-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  width: fit-content;
+}

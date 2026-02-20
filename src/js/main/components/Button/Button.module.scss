@@ -1,0 +1,312 @@
+/* Import variables */
+@use '../../variables.scss' as vars;
+
+.buttonContainer {
+  position: relative;
+  display: flex;
+  /* Change from inline-block to flex */
+  flex: 1;
+  /* Allow button container to grow */
+  width: 100%;
+  /* Ensure container takes full width */
+}
+
+.button {
+  width: 46px;
+  height: 46px;
+  background-color: transparent;
+  color: var(--app--color);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--app--highlight);
+  // cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+
+
+  &:hover {
+    background-color: var(--app--deep);
+    border: 1px solid var(--app--highlight);
+  }
+
+  &.disabled {
+    color: currentColor;
+    opacity: 0.25;
+
+    // cursor: not-allowed;
+    &:hover {
+      // cursor: not-allowed;
+      border: 1px solid var(--app--highlight);
+      background-color: transparent;
+    }
+  }
+}
+
+/* Text button styles for Play and Apply - fill available space */
+.playTextButton {
+  width: 100%;
+  /* Fill the button container */
+  flex: 1;
+  /* Allow button to grow */
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &:hover {
+    background-color: var(--app--deep);
+  }
+}
+
+.applyTextButton {
+  width: 100%;
+  /* Fill the button container */
+  flex: 1;
+  /* Allow button to grow */
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &:hover {
+    background-color: var(--app--deep);
+  }
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: absolute;
+  bottom: -24px;
+  left: 0px;
+
+  background-color: var(--app--highlight);
+  color: var(--app--color);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: xx-small;
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Button type specific hover colors */
+.staticButton {
+
+  svg path,
+  svg circle {
+    fill: none;
+    stroke: var(--app--color);
+  }
+}
+
+.staticButton:not(.disabled) {
+
+  // Set circle opacity to 0.25 by default
+  svg *[stroke="#545454"] {
+    stroke: var(--app--highlight);
+  }
+
+  &:hover {
+
+    // On hover, make rectangle orange
+    svg *[stroke="#D1D1D1"] {
+      stroke: var(--color_1);
+    }
+  }
+}
+
+.dynamicButton {
+  svg path {
+    fill: none;
+    stroke: var(--app--color);
+  }
+}
+
+.dynamicButton:not(.disabled) {
+
+  // Set circle opacity to 0.25 by default
+  svg path[stroke="#545454"] {
+    stroke: var(--app--highlight);
+  }
+
+  &:hover {
+
+    // On hover, make circle and cross yellow
+    svg path[stroke="#D1D1D1"] {
+      stroke: var(--color_2);
+    }
+  }
+}
+
+.playButton:not(.disabled) {
+  &:hover {
+    svg * {
+      fill: var(--color_3);
+    }
+  }
+}
+
+.playTextButton:not(.disabled) {
+  &:hover {
+    background-color: var(--app--deep);
+  }
+}
+
+.applyTextButton:not(.disabled) {
+  &:hover {
+    background-color: var(--app--deep);
+  }
+}
+
+.deleteButton:not(.disabled) {
+  svg path {
+    fill: var(--app--color);
+  }
+
+  // Set circle opacity to 0.25 by default
+
+
+  &:hover {
+    svg * {
+      fill: var(--color_4);
+    }
+  }
+}
+
+.centroidButton:not(.disabled) {
+  svg path {
+    fill: var(--app--color);
+  }
+
+  // Set circle opacity to 0.25 by default
+  svg path[fill="#545454"] {
+    fill: var(--app--highlight);
+  }
+
+  &:hover {
+
+    // On hover, make internal shape blue
+    svg path[fill="#D1D1D1"] {
+      fill: var(--color_3);
+    }
+  }
+}
+
+.constraintButton:not(.disabled) {
+  svg path {
+    fill: var(--app--color);
+  }
+
+  // Set circle opacity to 0.25 by default
+  svg path[fill="#545454"] {
+    fill: var(--app--highlight);
+  }
+
+  &:hover {
+
+    // On hover, make central shape yellow
+    svg path[fill="#D1D1D1"] {
+      fill: var(--color_2);
+    }
+  }
+}
+
+.magnetButton:not(.disabled) {
+  svg path {
+    fill: var(--app--color);
+  }
+
+  // Set circle opacity to 0.25 by default
+  svg path[fill="#545454"] {
+    fill: var(--app--highlight);
+  }
+
+  &:hover {
+
+    // On hover, make external arch orange
+    svg path[fill="#D1D1D1"] {
+      fill: var(--color_1);
+    }
+  }
+}
+
+.worldButton\+ {
+
+  svg path,
+  svg circle {
+    fill: none;
+    stroke: var(--app--color);
+  }
+}
+
+.worldButton\+:not(.disabled) {
+
+  // Settings button specific styles
+  svg .worldBall {
+    stroke: var(--app--highlight) !important;
+  }
+
+  svg .worldArch {
+    stroke: var(--app--color) !important;
+  }
+
+  // Legacy SVG support (keep just in case, or remove if not needed)
+  svg path[stroke="#545454"] {
+    stroke: var(--app--highlight);
+  }
+
+  &:hover {
+
+    // On hover, make circles yellow (legacy SVG)
+    svg path[stroke="#D1D1D1"] {
+      stroke: var(--color_3);
+    }
+
+    // On hover, make arch blue
+    svg .worldArch {
+      stroke: var(--color_3) !important;
+    }
+
+    // On hover, make circles yellow (new SVG structure)
+    svg .worldBall {
+      stroke: var(--color_2) !important;
+    }
+  }
+}
+
+.deleteButton:not(.disabled) {
+
+  // Set external shape opacity to 0.25 by default
+  path[fill="#D1D1D1"] {
+    fill: var(--app--color);
+  }
+
+
+  &:hover {
+
+    // Change external shape to red on hover
+    path[fill="#D1D1D1"] {
+      fill: var(--color_4) !important;
+      opacity: 1;
+    }
+  }
+}
+
+.icon {
+
+  width: 30px;
+  height: 30px;
+  display: block;
+  color: inherit;
+  stroke-width: 1px;
+  margin: 0;
+  padding: 0;
+
+  & * {
+    fill: currentColor;
+  }
+}

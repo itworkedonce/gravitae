@@ -1,0 +1,67 @@
+// -----------------------------
+// Gravitae Service: CSS Variables
+// -----------------------------
+// Centralized design system variables for consistent theming across the application.
+// Maintains dark theme palette and semantic color assignments for UI components.
+
+:root {
+  // -----------------------------
+  // Layout Foundation
+  // -----------------------------
+
+  --panel-spacing: 2px;
+  --border-radius: 10px;
+
+  // -----------------------------
+  // Primary Theme Palette
+  // -----------------------------
+  // Core dark theme colors that define the application's visual identity
+
+  --app--bg: #323232;
+  --app--color: #d1d1d1;
+  --app--deep: #262626;
+  --app--highlight: #545454;
+  --app--deep__border: #3f3f3f;
+  --app--highlight__border: #b2b2b2;
+
+  // -----------------------------
+  // Visual Effects
+  // -----------------------------
+
+  --light-shade: rgba(255, 0, 0, 0.15);
+
+  // -----------------------------
+  // Typography Hierarchy
+  // -----------------------------
+
+  --font-light: #6d6d6d;
+  --font-dark: #464646;
+
+  // -----------------------------
+  // Semantic Color System
+  // -----------------------------
+  // Colors assigned to specific UI states and actions for consistent user feedback
+
+  --color_1: #e9462f;
+  --color_2: #8e8101;
+  --color_3: #286dff;
+  --color_4: #958aaa;
+
+  // -----------------------------
+  // Extended Theme Colors
+  // -----------------------------
+  // Additional color definitions that need consolidation with primary palette
+
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --darkest: #222222;
+  --darker: #333333;
+  --dark: #444444;
+  --font: #bbbbbb;
+  --highlight: #aaaaaa;
+  --primary: #88715a;
+  --secondary: #4a3928;
+  --active: #20639b;
+  --changed: #3caea3;
+  --warning: #f6d55c;
+  --error: #ed553b;
+}
