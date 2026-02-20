@@ -6,6 +6,7 @@
 
 import { Body, Sleeping } from "matter-js";
 import { AnimationPlan } from "../../types/types";
+import { setBodyType } from "../bodies";
 
 interface InOutResult {
     isDisabled: boolean;
@@ -103,7 +104,7 @@ export const handleInPointActivation = (
         atInPointStatic = Math.round(initialBodyTypePre) === 2;
     }
 
-    Body.setStatic(body, atInPointStatic);
+    setBodyType(body, atInPointStatic);
     if (!atInPointStatic) {
         Sleeping.set(body, false);
     }

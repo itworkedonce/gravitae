@@ -245,7 +245,8 @@ export const extractBodyProperties = (body: any, layerData: any) => {
 // Based on Matter.js limitations and community solutions for toggling static state.
 export const setBodyType = (body: Matter.Body, isStatic: boolean) => {
   // Get the initial properties stored during creation
-  const initialProps = (body.plugin as any)?.initialProperties;
+  const pluginData = body.plugin as any;
+  const initialProps = pluginData?.initialProperties;
   if (!initialProps) {
     console.warn('Body is missing initial properties, type change may not work correctly');
     return;
@@ -253,9 +254,10 @@ export const setBodyType = (body: Matter.Body, isStatic: boolean) => {
 
   if (isStatic) {
     // Store current dynamic properties before making static
-    (body.plugin as any).dynamicProperties = {
+    pluginData.dynamicProperties = {
       mass: body.mass,
       inertia: body.inertia,
+      density: body.density,
       friction: body.friction,
       frictionAir: body.frictionAir,
       restitution: body.restitution
@@ -264,17 +266,21 @@ export const setBodyType = (body: Matter.Body, isStatic: boolean) => {
     // Set static (this will set mass and inertia to Infinity internally)
     Body.setStatic(body, true);
   } else {
-    // First restore mass to a finite value to allow dynamic behavior
-    Body.setMass(body, initialProps.mass);
+    const restoreProps = {
+      ...initialProps,
+      ...(pluginData?.dynamicProperties || {})
+    };
 
-    // Then unset static flag
+    // First unset static flag
     Body.setStatic(body, false);
 
     // Restore all other physical properties
-    body.inertia = initialProps.inertia;
-    body.friction = initialProps.friction;
-    body.frictionAir = initialProps.frictionAir;
-    body.restitution = initialProps.restitution;
+    Body.setMass(body, restoreProps.mass);
+    Body.setInertia(body, restoreProps.inertia);
+    Body.setDensity(body, restoreProps.density);
+    body.friction = restoreProps.friction;
+    body.frictionAir = restoreProps.frictionAir;
+    body.restitution = restoreProps.restitution;
 
     // Reset velocities to prevent unexpected movement
     Body.setVelocity(body, { x: 0, y: 0 });
@@ -282,7 +288,7 @@ export const setBodyType = (body: Matter.Body, isStatic: boolean) => {
   }
 
   // Update plugin state
-  (body.plugin as any).isStatic = isStatic;
+  pluginData.isStatic = isStatic;
 };
 
 export const createMatterBody = (
@@ -308,6 +314,7 @@ export const createMatterBody = (
   const isStatic =
     layerData.isStatic ??
     layerData.startPropertiesValues?.bodyType === 2;
+  const constructionIsStatic = false;
 
   const applyColor = (
     body: Matter.Body,
@@ -333,6 +340,11 @@ export const createMatterBody = (
 
     // Static bodies use reduced opacity and gray color for visual distinction
     if (isStatic) {
+      if (!body.plugin) body.plugin = {} as any;
+      if (!(body.plugin as any).originalFillStyle) {
+        (body.plugin as any).originalFillStyle = body.render.fillStyle;
+        (body.plugin as any).originalStrokeStyle = body.render.strokeStyle;
+      }
       body.render.opacity = 0.5;
       body.render.fillStyle = "#545454";
       body.render.strokeStyle = "#545454";
@@ -377,7 +389,7 @@ export const createMatterBody = (
             shape.size[0],
             shape.size[1],
             {
-              isStatic,
+              isStatic: constructionIsStatic,
               // ...applyColor(colors, layerId, isStatic, inOut || []),
               plugin: {
                 layerData: {
@@ -415,7 +427,7 @@ export const createMatterBody = (
               rectWidth,
               rectHeight,
               {
-                isStatic,
+                isStatic: constructionIsStatic,
                 plugin: {
                   layerData: {
                     inOut: inOut || [],
@@ -441,7 +453,7 @@ export const createMatterBody = (
                 shape.position[1],
                 radius,
                 {
-                  isStatic,
+                  isStatic: constructionIsStatic,
                   plugin: {
                     layerData: {
                       inOut: inOut || [],
@@ -455,7 +467,7 @@ export const createMatterBody = (
                 shape.position[1],
                 radius,
                 {
-                  isStatic,
+                  isStatic: constructionIsStatic,
                   plugin: {
                     layerData: {
                       inOut: inOut || [],
@@ -472,7 +484,7 @@ export const createMatterBody = (
                 shape.position[1] - (height / 2 - radius),
                 radius,
                 {
-                  isStatic,
+                  isStatic: constructionIsStatic,
                   plugin: {
                     layerData: {
                       inOut: inOut || [],
@@ -486,7 +498,7 @@ export const createMatterBody = (
                 shape.position[1] + (height / 2 - radius),
                 radius,
                 {
-                  isStatic,
+                  isStatic: constructionIsStatic,
                   plugin: {
                     layerData: {
                       inOut: inOut || [],
@@ -504,7 +516,7 @@ export const createMatterBody = (
               shape.position[1] - (height / 2 - radius),
               radius,
               {
-                isStatic,
+                isStatic: constructionIsStatic,
                 plugin: {
                   layerData: {
                     inOut: inOut || [],
@@ -519,7 +531,7 @@ export const createMatterBody = (
               shape.position[1] - (height / 2 - radius),
               radius,
               {
-                isStatic,
+                isStatic: constructionIsStatic,
                 plugin: {
                   layerData: {
                     inOut: inOut || [],
@@ -534,7 +546,7 @@ export const createMatterBody = (
               shape.position[1] + (height / 2 - radius),
               radius,
               {
-                isStatic,
+                isStatic: constructionIsStatic,
                 plugin: {
                   layerData: {
                     inOut: inOut || [],
@@ -549,7 +561,7 @@ export const createMatterBody = (
               shape.position[1] + (height / 2 - radius),
               radius,
               {
-                isStatic,
+                isStatic: constructionIsStatic,
                 plugin: {
                   layerData: {
                     inOut: inOut || [],
@@ -570,7 +582,7 @@ export const createMatterBody = (
           // Create the compound body
           part = Body.create({
             parts: roundedRectParts,
-            isStatic: isStatic,
+            isStatic: constructionIsStatic,
             // ...applyColor(colors, layerId, isStatic, inOut || []),
             plugin: {
               layerData: {
@@ -595,7 +607,7 @@ export const createMatterBody = (
           shape.position[1],
           [points],
           {
-            isStatic,
+            isStatic: constructionIsStatic,
             // ...applyColor(colors, layerId, isStatic, inOut || []),
             plugin: {
               layerData: {
@@ -690,7 +702,7 @@ export const createMatterBody = (
           }
 
           const part = Bodies.fromVertices(centroid.x, centroid.y, [vertices], {
-            isStatic,
+            isStatic: constructionIsStatic,
             // ...applyColor(colors, layerId, isStatic, inOut || []),
             plugin: {
               layerData: {
@@ -805,7 +817,7 @@ export const createMatterBody = (
           }
 
           const part = Bodies.fromVertices(centroid.x, centroid.y, [vertices], {
-            isStatic,
+            isStatic: constructionIsStatic,
             // ...applyColor(colors, layerId, isStatic, inOut || []),
             plugin: {
               layerData: {
@@ -939,7 +951,7 @@ export const createMatterBody = (
             centroid.y,
             [mappedVertices],
             {
-              isStatic: isStatic,
+              isStatic: constructionIsStatic,
               // ...applyColor(colors, layerId, isStatic, inOut || []),
               plugin: {
                 layerData: {
@@ -993,8 +1005,7 @@ export const createMatterBody = (
 
     const compoundBody = Body.create({
       parts: parts,
-      isStatic:
-        startPropertiesValues?.bodyType === 1 ? false : true || isStatic,
+      isStatic: constructionIsStatic,
       density: startPropertiesValues?.density
         ? startPropertiesValues.density / 1000
         : 0.001,

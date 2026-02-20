@@ -7,6 +7,7 @@
 import { Body, Sleeping } from "matter-js";
 import { AnimationPlan } from "../../types/types";
 import { applyBodyTypeVisuals } from "./simInOutPoints";
+import { setBodyType } from "../bodies";
 
 /**
  * Handle dynamic ↔ static body type switching based on AE keyframes.
@@ -29,9 +30,6 @@ export const handleBodyTypeSwitch = (
     ) return;
 
     const initialBodyTypePre = plan.layers[layerId]?.bodyType?.pre;
-    const isInitialStatic =
-        Math.round(initialBodyTypePre ?? -1) === 2 ||
-        (body as any)?.plugin?.layerData?.isStaticInitial;
 
     const currentValRounded = Math.round(bodyTypeSeries[currentCompIdx]);
     const prevValRounded =
@@ -39,10 +37,10 @@ export const handleBodyTypeSwitch = (
             ? Math.round(bodyTypeSeries[currentCompIdx - 1])
             : Math.round(initialBodyTypePre ?? currentValRounded);
 
-    if (!isInitialStatic && !isDisabled && currentValRounded !== prevValRounded) {
+    if (!isDisabled && currentValRounded !== prevValRounded) {
         const toStatic = currentValRounded === 2;
 
-        Body.setStatic(body, toStatic);
+        setBodyType(body, toStatic);
         if (!toStatic) Sleeping.set(body, false);
 
         applyBodyTypeVisuals(body, toStatic);

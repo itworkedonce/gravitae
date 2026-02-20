@@ -23,7 +23,7 @@ const Logger: React.FC = () => {
         <button className={styles['toggle-button']} onClick={toggleVisibility}>
           {isVisible ? 'Hide logs' : 'Show logs'}
         </button>
-        <span className={styles['version-badge']}>alpha.2</span>
+        <span className={styles['version-badge']}>alpha.2b</span>
       </div>
       {isVisible && (
         <div className={styles['logger-content-wrapper']}>
