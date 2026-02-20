@@ -1546,13 +1546,8 @@ export const setLayersCentroid = (compData: ProjectCompositions, forceLayerIds?:
         }
       }
     }
-    // Clear any existing expressions (including old centroid expressions)
 
-    // Check if centroid is already set (skip if not forcing)
     if (!shouldForce) {
-      // alert(layerId)
-      layerAnchorPoint.expression = "";
-      layerPosition.expression = "";
       const anchorExpression = layerAnchorPoint.expression;
       const positionExpression = layerPosition.expression;
       const isCentroidAlreadySet =
@@ -1564,26 +1559,29 @@ export const setLayersCentroid = (compData: ProjectCompositions, forceLayerIds?:
       }
     }
 
-
-
     const layerDataMatterPosition = layerData.matterObject?.position;
+    if (!layerDataMatterPosition) {
+      continue;
+    }
 
+    // Calculate localPoint using CURRENT (Evaluated) matrix
+    // This ensures that if the layer is rotated/moved with expressions active,
+    // we capture the correct local point corresponding to the centroid.
     const m = getLayerMatrix(aeLayer);
     const inv = invertMatrix(m);
 
     if (!inv) {
       // Matrix inversion failed - fallback to simple positioning
       console.warn("Matrix inversion failed for layer", layerId);
-      app.endUndoGroup();
-      return false;
-    }
-
-    if (!layerDataMatterPosition) {
       continue;
     }
 
     const worldPos = [layerDataMatterPosition.x, layerDataMatterPosition.y];
     const localPoint = applyMatrix(inv, worldPos as [number, number]);
+
+    // Clear expressions to read the Static Position
+    layerAnchorPoint.expression = "";
+    layerPosition.expression = "";
 
     const currentPosition = layerPosition.value as number[];
     // Set expressions to update anchor and position
