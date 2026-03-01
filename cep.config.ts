@@ -42,7 +42,7 @@ const config: CEP_Config = {
     country: "US",
     province: "CA",
     org: "It-Worked-Once",
-    password: process.env.ZXP_PASSWORD ?? "",
+    password: "just@passwords1234",
     tsa: [
       "http://timestamp.digicert.com/", // Windows Only
       "http://timestamp.apple.com/ts01", // MacOS Only

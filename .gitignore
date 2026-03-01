@@ -6,3 +6,6 @@ dist-ssr
 dist
 yarn-error.log
 .media
+.env
+.env.production
+.env.local
